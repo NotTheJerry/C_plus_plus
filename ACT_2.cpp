@@ -28,7 +28,6 @@ En la tercera opci�n preguntar al usuario si se quiere salir del programa, de 
 que el programa a terminado, de lo contrario regresar al men�
 */
 
-
 class Maestro {
 	public:
 		int codigo;
@@ -36,6 +35,7 @@ class Maestro {
 		int numgrupos;
 		int ayosAntiguedad;
 		float calcularSueldoQuincenal();
+		void imprimirDatos();
 		//Maestro(int codigo,	string nombre, int numGrupos, int ayosAntiguedad);
 		//Maestro();
 };
@@ -45,6 +45,7 @@ class Alumno : public Maestro {
 		int semestre;
 		int numcalificaciones;
 		float calcularPromedio();
+		void imprimirDatos(float p);
 		//Alumno(int codigo, string nombre, int semestre, int numcalificaciones);
 		//Alumno();
 };
@@ -74,6 +75,25 @@ float Alumno::calcularPromedio(){
 	
 }
 
+void Maestro::imprimirDatos() {
+
+	cout<<"\n\tSu codigo es: "<<this->codigo;
+	cout<<"\n\tSu nombre es: "<<this->nombre;
+	cout<<"\n\tSu antiguedad en la institucion es de: "<<this->ayosAntiguedad; if (  this->ayosAntiguedad == 1 ){ cout<<" ayo"; } else { cout<<" ayos"; }  
+	cout<<"\n\tEl numero de grupos que usted da clase son "<<this->numgrupos; if (  this->numgrupos == 1 ){ cout<<" grupo"; } else { cout<<" grupos"; }  
+	cout<<"\n\tSu sueldo quincenal es de "<<this->calcularSueldoQuincenal()<<" pesos";
+
+}
+
+void Alumno::imprimirDatos(float p) {
+
+	cout<<"\n\tSu codigo es: "<<this->codigo;
+	cout<<"\n\tSu nombre es: "<<this->nombre;
+	cout<<"\n\tEstas cursando el "<<this->semestre<<" semestre";
+	cout<<"\n\tTu promedio es de "<<p;
+
+}
+
 int main() {
 	
 	int opcion = 0;
@@ -94,11 +114,7 @@ int main() {
 				cout<<"\n\tDigite su nombre: "; cin.ignore(); getline(cin, maestro1.nombre);
 				cout<<"\n\tDigite el numero de ayos que lleva en la institucion: "; cin>>maestro1.ayosAntiguedad;
 				cout<<"\n\tDigite el numero de grupos que tiene actualmente: "; cin>>maestro1.numgrupos;
-				//Se imprimen los datos recabados
-				cout<<"\n\tSu codigo es: "<<maestro1.codigo;
-				cout<<"\n\tSu nombre es: "<<maestro1.nombre;
-				cout<<"\n\tSu antiguedad en la institucion es de: "<<maestro1.ayosAntiguedad; if ( maestro1.ayosAntiguedad == 1 ){ cout<<" ayo"; } else { cout<<" ayos"; }  
-				cout<<"\n\tSu sueldo quincenal es de "<<maestro1.calcularSueldoQuincenal()<<" pesos";
+				maestro1.imprimirDatos();
 				cout<<"\n\n\tIngrese el numero 3 para salir del programa o cualquier otro numero para regresar al menu\t"; cin>>opcion;
 				break;
 			}
@@ -109,17 +125,14 @@ int main() {
 				cout<<"\n\tDigite su nombre: "; cin>>alumno1.nombre;
 				cout<<"\n\tDigite el numero de semestre que esta cursando: "; cin>>alumno1.semestre;
 				cout<<"\n\tDigite el numero de calificaciones que obtuvo: "; cin>>alumno1.numcalificaciones;
-				float promedio = alumno1.calcularPromedio();
-				//Se imprimen los datos recabados
-				cout<<"\n\tSu codigo es: "<<alumno1.codigo;
-				cout<<"\n\tSu nombre es: "<<alumno1.nombre;
-				cout<<"\n\tEstas cursando el "<<alumno1.semestre<<" semestre";
-				cout<<"\n\tTu promedio es de "<<promedio;
+				float p = alumno1.calcularPromedio();
+				alumno1.imprimirDatos(p);
+
 				cout<<"\n\n\tIngrese el numero 3 para salir del programa o cualquier otro numero para regresar al menu\t"; cin>>opcion;
 				break;
 			}
 			case 3: {
-				opcion = 3;
+				cout<<"\n\n\tIngrese el numero 3 para confirmar el cierre del programa o cualquier otro numero para regresar al menu\n\n\t"; cin>>opcion;
 			}
 			
 		} //Fin switch
