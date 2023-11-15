@@ -1,6 +1,7 @@
 #include <iostream> //stdout stdin
 #include <stdlib.h> //system("clear")
 #include <string> //getline
+#include <vector>
 
 #define el endl;
 
@@ -31,11 +32,9 @@ char getch() {
     return (buf);
 }
 
-
-
-void getchi() { cout<<"\n\n\tPresione cualquier tecla para continuar\t"; getch(); }
+void getcha () { cout<<"\n\n\tIngrese cualquier tecla para continuar\t"; getch(); }
+void getchi() { string o; cout<<"\n\n\tIngrese cualquier tecla para continuar\t"; getline(cin, o); }
 void opcionInvalida() { system("clear"); cout<<"\n\tERROR DE INGRESO DE OPCION"<<el; cout<<"\n\tNo ingresaste una opcion valida"; getchi(); }
-// void getch() { int aux; cout<<"\n\n\tIngrese cualquier letra/numero para continuar\t"; cin>>aux; }
 
 class Persona {
     public:
@@ -58,9 +57,11 @@ class Alumno : public Persona
             cout<<"\n\tIngrese su profesion es: "; getline(cin, profesion); cout<<el;
             cout<<"\n\tIngrese el numero de materias que esta cursando: "; cin>>numMaterias; cout<<el;
             cin.ignore();
+
             for(int i=0; i < numMaterias; i++){ 
                 cout<<"\n\t"<<i+1<<". Materia: "; getline(cin, materias[i]); cout<<el;
             }
+            getcha();
         }
 
         void leerDatos() override {
@@ -72,7 +73,64 @@ class Alumno : public Persona
             for(int i=0; i < numMaterias; i++){ 
                 cout<<"\n\t\t "<<i+1<<". Materia: "<<materias[i]<<el;
              }
-            getchi();
+            getcha();
+        } 
+};
+
+class Profesor: public Persona
+{
+    public:
+        void setDatos() override {
+            system("clear");
+            cin.ignore();
+            cout<<"\n\tESTABLECER DATOS PROFESOR"<<el;
+            cout<<"\n\tIngrese su nombre: "; getline(cin, nombre); cout<<el;
+            cout<<"\n\tIngrese su profesion es: "; getline(cin, profesion); cout<<el;
+            cout<<"\n\tIngrese el numero de materias que imparte actualmente: "; cin>>numMaterias; cout<<el;
+            cin.ignore();
+
+            for(int i=0; i < numMaterias; i++){ 
+                cout<<"\n\t"<<i+1<<". Materia: "; getline(cin, materias[i]); cout<<el;
+            }
+            getcha();
+        }
+
+        void leerDatos() override {
+            system("clear"); string aux;
+            cout<<"\n\tESTABLECER DATOS PROFESOR"<<el;
+            cout<<"\n\tSu nombre es: "<<nombre<<el;
+            cout<<"\n\tSu profesion es: "<<profesion<<el;
+            cout<<"\n\tLas materias que imparte son"<<el;
+            for(int i=0; i < numMaterias; i++){ 
+                cout<<"\n\t\t "<<i+1<<". Materia: "<<materias[i]<<el;
+             }
+            getcha();
+        } 
+};
+
+class Admin {
+    public:
+        void leerDatos(vector<Profesor> vectorProfesores, vector<Alumno> vectorAlumnos) {
+            system("clear"); string aux;
+            cout<<"\n\tDATOS DE TODOS LOS ALUMNOS"<<el;
+            for (int i = 0; i < vectorAlumnos.size(); i++) {
+                cout<<"\n\tSu nombre es: "<<vectorAlumnos[i].nombre<<el;
+                cout<<"\n\tSu profesion es: "<<vectorAlumnos[i].profesion<<el;
+                cout<<"\n\tLas materias que imparte son"<<el;
+                for (int j=0; j < vectorAlumnos[i].numMaterias; j++) {
+                    cout<<"\n\t\t "<<j+1<<". Materia: "<<vectorAlumnos[i].materias[j]<<el;
+                }
+            }
+            cout<<"\n\n\n\tDATOS DE TODOS LOS PROFESORES"<<el;
+            for (int i = 0; i < vectorProfesores.size(); i++) {
+                cout<<"\n\tSu nombre es: "<<vectorProfesores[i].nombre<<el;
+                cout<<"\n\tSu profesion es: "<<vectorProfesores[i].profesion<<el;
+                cout<<"\n\tLas materias que imparte son"<<el;
+                for (int j=0; j < vectorProfesores[i].numMaterias; j++) {
+                    cout<<"\n\t\t "<<j+1<<". Materia: "<<vectorProfesores[i].materias[j]<<el;
+                }
+            }
+            getcha();
         } 
 };
 
@@ -86,12 +144,11 @@ void bienvenida(){
     }    
 }
 
-int menuAlumnos() {
+Alumno menuAlumnos() {
     int opcion = 0;
     Alumno alumno1;
 
     while(opcion != 3) {
-    cin.ignore();
     system("clear");
     cout<<"\n\tMENU ALUMNOS"<<el;
     cout<<"\n\t1. Ingresar sus datos"<<el;
@@ -115,11 +172,61 @@ int menuAlumnos() {
         }
     }
 
-    return 0;
+    return alumno1;
 }
 
-void menuProfesores() {
+Profesor menuProfesores() {
+    int opcion = 0;
+    Profesor profesor1;
 
+    while(opcion != 3) {
+    system("clear");
+    cout<<"\n\tMENU PROFESORES"<<el;
+    cout<<"\n\t1. Ingresar sus datos"<<el;
+    cout<<"\n\t2. Imprimir sus datos"<<el;
+    cout<<"\n\t3. Salir al menu"<<el;
+    cout<<"\n\tSeleccione una opcion:\t"; cin>>opcion;
+    
+    
+        switch(opcion){
+        case 1:
+            profesor1.setDatos();
+            break;
+        case 2:
+            profesor1.leerDatos();
+            break;
+        case 3:
+            opcion = 3;
+            break;
+        default:
+            opcionInvalida();
+        }
+    }
+    return profesor1;
+}
+
+void menuAdmin(vector<Profesor> vectorProfesores, vector<Alumno> vectorAlumnos) {
+    int opcion = 0;
+    Admin admin;
+    while(opcion != 2) {
+    system("clear");
+    cout<<"\n\tMENU ADMIN"<<el;
+    cout<<"\n\t1. Mostrar los datos de todos los alumnos"<<el;
+    cout<<"\n\t2. Salir al menu"<<el;
+    cout<<"\n\tSeleccione una opcion:\t"; cin>>opcion;
+    
+    
+        switch(opcion){
+        case 1:
+            admin.leerDatos(vectorProfesores, vectorAlumnos);
+            break;
+        case 2:
+            opcion = 2;
+            break;
+        default:
+            opcionInvalida();
+        }
+    }
 }
 
 void finPrograma() {
@@ -128,22 +235,32 @@ void finPrograma() {
 
 void menu() {
     int opcion;
-    while(opcion != 3) {
+    vector<Profesor> vectorProfesores;
+    vector<Alumno> vectorAlumnos;
+    Alumno alumno; 
+    Profesor profesor;
+    while(opcion != 4) {
         system("clear");
         cout<<"\n\tMENU"<<el;
         cout<<"\n\t1. Alumnos"<<el;
         cout<<"\n\t2. Profesores"<<el;
-        cout<<"\n\t3. Salir"<<el;
+        cout<<"\n\t3. Administrador"<<el;
+        cout<<"\n\t4. Salir"<<el;
         cout<<"\n\tSeleccione una opcion:\t"; cin>>opcion;
         
         switch(opcion){
         case 1:
-            menuAlumnos();
+            alumno = menuAlumnos();
+            vectorAlumnos.push_back(alumno);
             break;
         case 2:
-            menuProfesores();
+            profesor = menuProfesores();
+            vectorProfesores.push_back(profesor);
             break;
         case 3:
+            menuAdmin(vectorProfesores, vectorAlumnos);
+            break;
+        case 4:
             break;
         default:
             opcionInvalida();
@@ -156,22 +273,8 @@ void menu() {
 int main()
 {
     int opcion;
-    bienvenida();
+    // bienvenida();
 	menu();
-    while(opcion != 3) {
-        switch(opcion){
-        case 1:
-            menuAlumnos();
-            break;
-        case 2:
-            menuProfesores();
-            break;
-        case 3:
-            break;
-        default:
-            cout<<"\n\tNo ingresaste una opcion valida";
-        }
-    }
 
     finPrograma();
     return 0;
